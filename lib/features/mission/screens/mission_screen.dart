@@ -47,7 +47,9 @@ class _MissionScreenState extends State<MissionScreen> {
       mission: mission,
       onChanged: (value) {
         setState(() {
-          mission.completed = value ?? false;
+          final index = missionList.indexOf(mission);
+
+          missionList[index] = mission.copyWith(completed: value ?? false);
         });
       },
     );
