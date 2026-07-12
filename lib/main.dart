@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shady_os/core/screens/home_screen.dart';
+import 'package:shady_os/core/theme/app_theme.dart';
 
 void main() {
   runApp(const ShadyOS());
@@ -12,15 +14,8 @@ class ShadyOS extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Shady OS',
-      theme: ThemeData.dark(),
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Shady OS',
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
+      theme: AppTheme.darkTheme,
+      home: const HomeScreen(),
     );
   }
 }
