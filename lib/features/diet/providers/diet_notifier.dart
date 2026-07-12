@@ -93,9 +93,18 @@ class DietNotifier extends StateNotifier<List<DietItem>> {
     state = state.where((item) => item.id != id).toList();
   }
 
+  // int get completedCount => state.where((item) => item.completed).length;
+
+  // int get totalCount => state.length;
+
+  // double get progress => totalCount == 0 ? 0 : completedCount / totalCount;
+
   int get completedCount => state.where((item) => item.completed).length;
 
   int get totalCount => state.length;
 
-  double get progress => totalCount == 0 ? 0 : completedCount / totalCount;
+  double get progress {
+    if (state.isEmpty) return 0;
+    return completedCount / totalCount;
+  }
 }
