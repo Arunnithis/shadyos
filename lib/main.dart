@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shady_os/core/screens/home_screen.dart';
 import 'package:shady_os/core/theme/app_theme.dart';
+import 'package:shady_os/core/storage/hive_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const ShadyOS());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await HiveService.init();
+
+  runApp(const ProviderScope(child: ShadyOS()));
 }
 
 class ShadyOS extends StatelessWidget {
