@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:shady_os/core/widgets/dashboard_card.dart';
+import 'package:shady_os/core/widgets/primary_card.dart';
+import 'package:shady_os/core/widgets/summary_tile.dart';
 
 class SummaryCard extends StatelessWidget {
-  const SummaryCard({super.key});
+  final String missionValue;
+  final String waterValue;
+  final String dietValue;
+
+  const SummaryCard({
+    super.key,
+    required this.missionValue,
+    required this.waterValue,
+    required this.dietValue,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return DashboardCard(
-      child: const Column(
+    return PrimaryCard(
+      child: Column(
         children: [
-          ListTile(
-            leading: Icon(Icons.flag),
-            title: Text("Mission"),
-            trailing: Text("0 / 9"),
+          SummaryTile(icon: Icons.flag, title: "Missions", value: missionValue),
+          const Divider(),
+          SummaryTile(
+            icon: Icons.water_drop,
+            title: "Water",
+            value: waterValue,
           ),
-
-          Divider(),
-
-          ListTile(
-            leading: Icon(Icons.restaurant),
-            title: Text("Diet"),
-            trailing: Text("0%"),
-          ),
-
-          Divider(),
-
-          ListTile(
-            leading: Icon(Icons.water_drop),
-            title: Text("Water"),
-            trailing: Text("0 / 6"),
-          ),
+          const Divider(),
+          SummaryTile(icon: Icons.restaurant, title: "Diet", value: dietValue),
         ],
       ),
     );
