@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/mission_repository.dart';
 import '../models/mission.dart';
-import '../models/mission_data.dart';
 
 final missionRepositoryProvider = Provider<MissionRepository>((ref) {
   return MissionRepository();
@@ -15,36 +14,84 @@ final missionNotifierProvider =
 
 class MissionNotifier extends StateNotifier<List<Mission>> {
   MissionNotifier(this._repository) : super([]) {
-    loadMissions();
+    _initialize();
   }
 
   final MissionRepository _repository;
 
+  Future<void> _initialize() async {
+    await _repository.initialize();
+    loadMissions();
+  }
+
   void loadMissions() {
-    state = _repository.loadMissions(missions);
+    state = _repository.loadMissions();
   }
 
   Future<void> toggleMission(String id) async {
-    final updated = state.map((mission) {
-      if (mission.id == id) {
-        return mission.copyWith(completed: !mission.completed);
-      }
-      return mission;
-    }).toList();
+    final index = state.indexWhere((m) => m.id == id);
 
-    state = updated;
+    if (index == -1) return;
 
-    final changedMission = updated.firstWhere((m) => m.id == id);
+    final updatedMission = state[index].copyWith(
+      completed: !state[index].completed,
+    );
 
-    await _repository.saveMission(changedMission);
+    await _repository.updateMission(updatedMission);
+
+    final updatedList = [...state];
+    updatedList[index] = updatedMission;
+
+    state = updatedList;
+  }
+
+  Future<void> addMission({
+    required String title,
+    required String category,
+  }) async {
+    final mission = Mission(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      title: title,
+      category: category,
+      completed: false,
+    );
+
+    await _repository.addMission(mission);
+
+    state = [...state, mission];
+  }
+
+  Future<void> editMission({
+    required String id,
+    required String title,
+    required String category,
+  }) async {
+    final index = state.indexWhere((m) => m.id == id);
+
+    if (index == -1) return;
+
+    final updatedMission = state[index].copyWith(
+      title: title,
+      category: category,
+    );
+
+    await _repository.updateMission(updatedMission);
+
+    final updatedList = [...state];
+    updatedList[index] = updatedMission;
+
+    state = updatedList;
+  }
+
+  Future<void> deleteMission(String id) async {
+    await _repository.deleteMission(id);
+
+    state = state.where((m) => m.id != id).toList();
   }
 
   int get completedCount => state.where((m) => m.completed).length;
 
   int get totalCount => state.length;
 
-  double get progress {
-    if (state.isEmpty) return 0;
-    return completedCount / totalCount;
-  }
+  double get progress => totalCount == 0 ? 0 : completedCount / totalCount;
 }

@@ -1,6 +1,6 @@
 import 'mission.dart';
 
-const List<Mission> missions = [
+final List<Mission> missionList = [
   // ==========================
   // Career
   // ==========================

@@ -1,33 +1,45 @@
 import 'package:hive/hive.dart';
+
+import '../../../core/storage/boxes.dart';
 import '../models/mission.dart';
+import '../models/mission_data.dart';
 
 class MissionRepository {
-  MissionRepository() : _missionBox = Hive.box('missions');
+  MissionRepository() : _box = Hive.box<Mission>(HiveBoxes.missions);
 
-  final Box _missionBox;
+  final Box<Mission> _box;
 
-  /// Save a mission's completion state
-  Future<void> saveMission(Mission mission) async {
-    await _missionBox.put(mission.id, mission.completed);
+  /// Seed default missions on first launch
+  Future<void> initialize() async {
+    if (_box.isNotEmpty) return;
+
+    for (final mission in missionList) {
+      await _box.put(mission.id, mission);
+    }
   }
 
-  /// Load a mission's completion state
-  bool loadMission(Mission mission) {
-    return _missionBox.get(mission.id, defaultValue: false) as bool;
+  /// Load all missions
+  List<Mission> loadMissions() {
+    return _box.values.toList();
   }
 
-  /// Load all missions with their saved state
-  List<Mission> loadMissions(List<Mission> missions) {
-    return missions.map((mission) {
-      final completed =
-          _missionBox.get(mission.id, defaultValue: false) as bool;
-
-      return mission.copyWith(completed: completed);
-    }).toList();
+  /// Add a mission
+  Future<void> addMission(Mission mission) async {
+    await _box.put(mission.id, mission);
   }
 
-  /// Clear all mission progress
-  Future<void> clearMissions() async {
-    await _missionBox.clear();
+  /// Update a mission
+  Future<void> updateMission(Mission mission) async {
+    await _box.put(mission.id, mission);
+  }
+
+  /// Delete a mission
+  Future<void> deleteMission(String id) async {
+    await _box.delete(id);
+  }
+
+  /// Clear all missions
+  Future<void> clear() async {
+    await _box.clear();
   }
 }
