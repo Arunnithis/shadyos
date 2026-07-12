@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/water_repository.dart';
 import '../models/water.dart';
 
-final waterRepositoryProvider = Provider((ref) => WaterRepository());
+final waterRepositoryProvider = Provider<WaterRepository>((ref) {
+  return WaterRepository();
+});
 
 final waterNotifierProvider = StateNotifierProvider<WaterNotifier, Water>((
   ref,
