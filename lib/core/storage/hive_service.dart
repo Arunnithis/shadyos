@@ -1,5 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shady_os/features/mission/models/mission.dart';
+
+import '../../features/mission/models/mission.dart';
+import 'boxes.dart';
 
 class HiveService {
   HiveService._();
@@ -11,10 +13,10 @@ class HiveService {
       Hive.registerAdapter(MissionAdapter());
     }
 
-    await Hive.openBox('missions');
-    await Hive.openBox('diet');
-    await Hive.openBox('water');
-    await Hive.openBox('progress');
-    await Hive.openBox('settings');
+    await Hive.openBox<Mission>(HiveBoxes.missions);
+    await Hive.openBox(HiveBoxes.diet);
+    await Hive.openBox(HiveBoxes.water);
+    await Hive.openBox(HiveBoxes.progress);
+    await Hive.openBox(HiveBoxes.settings);
   }
 }
