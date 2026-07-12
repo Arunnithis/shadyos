@@ -29,7 +29,7 @@ class DietScreen extends ConsumerWidget {
             (meal) => DietTile(
               meal: meal,
               onChanged: (_) {
-                ref.read(dietNotifierProvider.notifier).toggleMeal(meal.id);
+                ref.read(dietNotifierProvider.notifier).toggleItem(meal.id);
               },
             ),
           ),
@@ -39,7 +39,7 @@ class DietScreen extends ConsumerWidget {
             (meal) => DietTile(
               meal: meal,
               onChanged: (_) {
-                ref.read(dietNotifierProvider.notifier).toggleMeal(meal.id);
+                ref.read(dietNotifierProvider.notifier).toggleItem(meal.id);
               },
             ),
           ),
@@ -49,7 +49,7 @@ class DietScreen extends ConsumerWidget {
             (meal) => DietTile(
               meal: meal,
               onChanged: (_) {
-                ref.read(dietNotifierProvider.notifier).toggleMeal(meal.id);
+                ref.read(dietNotifierProvider.notifier).toggleItem(meal.id);
               },
             ),
           ),
