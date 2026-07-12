@@ -4,14 +4,13 @@ import '../data/mission_repository.dart';
 import '../models/mission.dart';
 import '../models/mission_data.dart';
 
-final missionRepositoryProvider = Provider<MissionRepository>(
-  (ref) => MissionRepository(),
-);
+final missionRepositoryProvider = Provider<MissionRepository>((ref) {
+  return MissionRepository();
+});
 
 final missionNotifierProvider =
     StateNotifierProvider<MissionNotifier, List<Mission>>((ref) {
-      final repository = ref.read(missionRepositoryProvider);
-      return MissionNotifier(repository);
+      return MissionNotifier(ref.read(missionRepositoryProvider));
     });
 
 class MissionNotifier extends StateNotifier<List<Mission>> {
@@ -38,5 +37,14 @@ class MissionNotifier extends StateNotifier<List<Mission>> {
     final changedMission = updated.firstWhere((m) => m.id == id);
 
     await _repository.saveMission(changedMission);
+  }
+
+  int get completedCount => state.where((m) => m.completed).length;
+
+  int get totalCount => state.length;
+
+  double get progress {
+    if (state.isEmpty) return 0;
+    return completedCount / totalCount;
   }
 }

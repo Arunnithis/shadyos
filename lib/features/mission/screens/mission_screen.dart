@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/mission.dart';
 import '../providers/mission_notifier.dart';
 import '../widgets/mission_section.dart';
 import '../widgets/mission_tile.dart';
@@ -27,24 +26,39 @@ class MissionScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         children: [
           const MissionSection(title: "Career"),
-          ...career.map((mission) => buildTile(ref, mission)),
+
+          ...career.map(
+            (m) => MissionTile(
+              mission: m,
+              onChanged: (_) {
+                ref.read(missionNotifierProvider.notifier).toggleMission(m.id);
+              },
+            ),
+          ),
 
           const MissionSection(title: "Health"),
-          ...health.map((mission) => buildTile(ref, mission)),
+
+          ...health.map(
+            (m) => MissionTile(
+              mission: m,
+              onChanged: (_) {
+                ref.read(missionNotifierProvider.notifier).toggleMission(m.id);
+              },
+            ),
+          ),
 
           const MissionSection(title: "Personal"),
-          ...personal.map((mission) => buildTile(ref, mission)),
+
+          ...personal.map(
+            (m) => MissionTile(
+              mission: m,
+              onChanged: (_) {
+                ref.read(missionNotifierProvider.notifier).toggleMission(m.id);
+              },
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget buildTile(WidgetRef ref, Mission mission) {
-    return MissionTile(
-      mission: mission,
-      onChanged: (_) {
-        ref.read(missionNotifierProvider.notifier).toggleMission(mission.id);
-      },
     );
   }
 }
