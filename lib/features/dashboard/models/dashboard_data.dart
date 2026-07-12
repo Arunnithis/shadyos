@@ -3,11 +3,9 @@ class DashboardData {
   final int totalMissions;
 
   final int waterGlasses;
-
   final int waterGoal;
 
   final int completedMeals;
-
   final int totalMeals;
 
   const DashboardData({
@@ -19,6 +17,7 @@ class DashboardData {
     required this.totalMeals,
   });
 
+  // Progress getters
   double get missionProgress =>
       totalMissions == 0 ? 0 : completedMissions / totalMissions;
 
@@ -28,4 +27,13 @@ class DashboardData {
 
   double get overallProgress =>
       (missionProgress + waterProgress + dietProgress) / 3;
+
+  // Display getters
+  String get missionText => "$completedMissions / $totalMissions";
+
+  String get waterText => "$waterGlasses / $waterGoal";
+
+  String get dietText => "$completedMeals / $totalMeals";
+
+  String get scoreText => "${(overallProgress * 100).round()}%";
 }
