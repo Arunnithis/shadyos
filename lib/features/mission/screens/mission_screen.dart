@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../models/mission.dart';
-import '../models/mission_data.dart';
+import '../providers/mission_notifier.dart';
 import '../widgets/mission_section.dart';
 import '../widgets/mission_tile.dart';
 
-class MissionScreen extends StatefulWidget {
+class MissionScreen extends ConsumerWidget {
   const MissionScreen({super.key});
 
   @override
-  State<MissionScreen> createState() => _MissionScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final missionList = ref.watch(missionNotifierProvider);
 
-class _MissionScreenState extends State<MissionScreen> {
-  final List<Mission> missionList = missions;
+    final career = missionList.where((m) => m.category == 'Career').toList();
 
-  @override
-  Widget build(BuildContext context) {
-    final career = missionList.where((m) => m.category == "Career").toList();
-
-    final health = missionList.where((m) => m.category == "Health").toList();
+    final health = missionList.where((m) => m.category == 'Health').toList();
 
     final personal = missionList
-        .where((m) => m.category == "Personal")
+        .where((m) => m.category == 'Personal')
         .toList();
 
     return Scaffold(
@@ -30,27 +27,23 @@ class _MissionScreenState extends State<MissionScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           const MissionSection(title: "Career"),
-          ...career.map(buildTile),
+          ...career.map((mission) => buildTile(ref, mission)),
 
           const MissionSection(title: "Health"),
-          ...health.map(buildTile),
+          ...health.map((mission) => buildTile(ref, mission)),
 
           const MissionSection(title: "Personal"),
-          ...personal.map(buildTile),
+          ...personal.map((mission) => buildTile(ref, mission)),
         ],
       ),
     );
   }
 
-  Widget buildTile(Mission mission) {
+  Widget buildTile(WidgetRef ref, Mission mission) {
     return MissionTile(
       mission: mission,
-      onChanged: (value) {
-        setState(() {
-          final index = missionList.indexOf(mission);
-
-          missionList[index] = mission.copyWith(completed: value ?? false);
-        });
+      onChanged: (_) {
+        ref.read(missionNotifierProvider.notifier).toggleMission(mission.id);
       },
     );
   }
