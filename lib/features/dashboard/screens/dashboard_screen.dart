@@ -10,6 +10,9 @@ class DashboardScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.background,
+
+        appBar: AppBar(title: const Text("Dashboard")),
+
         body: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(

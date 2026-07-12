@@ -5,10 +5,11 @@ class WaterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(title: const Text("Water")),
+      body: const Center(
         child: Text(
-          'Mission',
+          "Water",
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),

@@ -5,10 +5,11 @@ class DietScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(title: const Text("Diet")),
+      body: const Center(
         child: Text(
-          'Mission',
+          "Diet",
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),

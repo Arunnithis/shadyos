@@ -7,6 +7,7 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       brightness: Brightness.dark,
+
       scaffoldBackgroundColor: AppColors.background,
 
       colorScheme: ColorScheme.fromSeed(
@@ -17,6 +18,14 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
         centerTitle: true,
+        elevation: 0,
+      ),
+
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColors.card,
+        selectedItemColor: AppColors.gold,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         elevation: 0,
       ),
     );

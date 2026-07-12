@@ -5,10 +5,11 @@ class MissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Scaffold(
+      appBar: AppBar(title: const Text("Mission")),
+      body: const Center(
         child: Text(
-          'Mission',
+          "Mission",
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),

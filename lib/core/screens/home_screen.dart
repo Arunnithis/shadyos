@@ -38,8 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
 
-        type: BottomNavigationBarType.fixed,
-
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Dashboard'),
           BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Mission'),
