@@ -3,19 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:shady_os/core/theme/app_colors.dart';
 import 'package:shady_os/features/dashboard/widgets/greeting_section.dart';
-import 'package:shady_os/features/dashboard/widgets/progress_card.dart';
-import 'package:shady_os/features/dashboard/widgets/dashboard_summary_card.dart';
-import 'package:shady_os/features/mission/providers/mission_notifier.dart';
+import '../providers/dashboard_provider.dart';
+import '../widgets/score_card.dart';
+import '../widgets/summary_card.dart';
+import '../widgets/streak_card.dart';
+import '../widgets/quote_card.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final missions = ref.watch(missionNotifierProvider);
-
-    final completed = missions.where((m) => m.completed).length;
-    final total = missions.length;
+    final dashboard = ref.watch(dashboardProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -27,16 +26,25 @@ class DashboardScreen extends ConsumerWidget {
           children: [
             const GreetingSection(),
 
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
 
-            const ProgressCard(),
+            ScoreCard(progress: dashboard.overallProgress),
 
             const SizedBox(height: 20),
 
-            DashboardSummaryCard(
-              completedMissions: completed,
-              totalMissions: total,
+            SummaryCard(
+              missionValue: dashboard.missionText,
+              waterValue: dashboard.waterText,
+              dietValue: dashboard.dietText,
             ),
+
+            const SizedBox(height: 20),
+
+            const StreakCard(streak: 0),
+
+            const SizedBox(height: 20),
+
+            const QuoteCard(),
           ],
         ),
       ),
