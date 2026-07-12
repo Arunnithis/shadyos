@@ -1,66 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:shady_os/core/theme/app_colors.dart';
-import 'package:shady_os/core/widgets/dashboard_card.dart';
+import 'package:shady_os/features/dashboard/widgets/greeting_section.dart';
+import 'package:shady_os/features/dashboard/widgets/progress_card.dart';
+import 'package:shady_os/features/dashboard/widgets/summary_card.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.background,
+    return Scaffold(
+      backgroundColor: AppColors.background,
 
-        appBar: AppBar(title: const Text("Dashboard")),
+      appBar: AppBar(title: const Text("Dashboard")),
 
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Good Evening, Arun",
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GreetingSection(),
 
-              const SizedBox(height: 6),
+            SizedBox(height: 25),
 
-              const Text(
-                "Become Unstoppable",
-                style: TextStyle(color: AppColors.gold, fontSize: 16),
-              ),
+            ProgressCard(),
 
-              const SizedBox(height: 25),
+            SizedBox(height: 20),
 
-              DashboardCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "🔥 0 Day Streak",
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    SizedBox(height: 18),
-
-                    LinearProgressIndicator(value: 0),
-
-                    SizedBox(height: 12),
-
-                    Text("Today's Progress : 0%"),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            SummaryCard(),
+          ],
         ),
       ),
     );
