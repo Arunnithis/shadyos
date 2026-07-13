@@ -4,4 +4,6 @@ class HiveBoxes {
   static const water = 'water';
   static const progress = 'progress';
   static const settings = 'settings';
+
+  static const career = 'career';
 }
