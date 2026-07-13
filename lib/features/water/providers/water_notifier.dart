@@ -37,4 +37,12 @@ class WaterNotifier extends StateNotifier<Water> {
 
     await _repository.reset();
   }
+
+  Future<void> removeGlass() async {
+    if (state.glasses == 0) return;
+
+    state = state.copyWith(glasses: state.glasses - 1);
+
+    await _repository.saveWater(state);
+  }
 }
