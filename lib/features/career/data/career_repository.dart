@@ -1,19 +1,13 @@
-import 'package:hive/hive.dart';
-
-import '../../../core/storage/boxes.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/career_data.dart';
 import '../models/career_task.dart';
 
 class CareerRepository {
-  CareerRepository() : _box = Hive.box<CareerTask>(HiveBoxes.career);
-
-  final Box<CareerTask> _box;
+  final Box<CareerTask> _box = Hive.box<CareerTask>('career');
 
   Future<void> initialize() async {
-    if (_box.isNotEmpty) return;
-
-    for (final task in careerTasks) {
-      await _box.put(task.id, task);
+    if (_box.isEmpty) {
+      await _box.addAll(CareerData.defaultTasks());
     }
   }
 
@@ -22,18 +16,28 @@ class CareerRepository {
   }
 
   Future<void> addTask(CareerTask task) async {
-    await _box.put(task.id, task);
+    await _box.add(task);
   }
 
-  Future<void> updateTask(CareerTask task) async {
-    await _box.put(task.id, task);
+  Future<void> updateTask(int index, CareerTask task) async {
+    await _box.putAt(index, task);
   }
 
-  Future<void> deleteTask(String id) async {
-    await _box.delete(id);
+  Future<void> deleteTask(int index) async {
+    await _box.deleteAt(index);
   }
 
-  Future<void> clear() async {
+  Future<void> toggleTask(int index) async {
+    final task = _box.getAt(index);
+
+    if (task == null) return;
+
+    task.completed = !task.completed;
+    await task.save();
+  }
+
+  Future<void> resetCareer() async {
     await _box.clear();
+    await _box.addAll(CareerData.defaultTasks());
   }
 }

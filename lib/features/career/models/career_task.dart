@@ -1,23 +1,24 @@
 import 'package:hive/hive.dart';
 
+
 part 'career_task.g.dart';
 
 @HiveType(typeId: 2)
 class CareerTask extends HiveObject {
   @HiveField(0)
-  final String id;
+  String id;
 
   @HiveField(1)
-  final String title;
+  String title;
 
   @HiveField(2)
-  final String category;
+  String category;
 
   @HiveField(3)
-  final bool completed;
+  bool completed;
 
   @HiveField(4)
-  final DateTime createdAt;
+  DateTime createdAt;
 
   CareerTask({
     required this.id,

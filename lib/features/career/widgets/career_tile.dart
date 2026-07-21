@@ -5,7 +5,7 @@ import '../models/career_task.dart';
 
 class CareerTile extends StatelessWidget {
   final CareerTask task;
-  final ValueChanged<bool?> onChanged;
+  final VoidCallback onChanged;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
@@ -21,25 +21,18 @@ class CareerTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: AppColors.card,
-      margin: const EdgeInsets.only(bottom: 12),
-      child: CheckboxListTile(
-        value: task.completed,
-        onChanged: onChanged,
-        activeColor: AppColors.primary,
-        checkColor: Colors.white,
-        controlAffinity: ListTileControlAffinity.leading,
-
+      margin: const EdgeInsets.only(bottom: 10),
+      child: ListTile(
+        leading: Checkbox(value: task.completed, onChanged: (_) => onChanged()),
         title: Text(
           task.title,
           style: TextStyle(
-            color: Colors.white,
             decoration: task.completed
                 ? TextDecoration.lineThrough
                 : TextDecoration.none,
           ),
         ),
-
-        secondary: PopupMenuButton<String>(
+        trailing: PopupMenuButton<String>(
           onSelected: (value) {
             if (value == 'edit') {
               onEdit();

@@ -1,91 +1,71 @@
 import 'career_task.dart';
 
-final List<CareerTask> careerTasks = [
-  // STUDY
-  CareerTask(
-    id: 'study_1',
-    title: 'Playwright',
-    category: 'Study',
-    createdAt: DateTime.now(),
-  ),
+class CareerData {
+  static List<CareerTask> defaultTasks() {
+    final now = DateTime.now();
 
-  CareerTask(
-    id: 'study_2',
-    title: 'Python',
-    category: 'Study',
-    createdAt: DateTime.now(),
-  ),
+    return [
+      // Study
+      CareerTask(
+        id: '1',
+        title: 'Study Playwright',
+        category: 'Study',
+        createdAt: now,
+      ),
+      CareerTask(
+        id: '2',
+        title: 'Practice Python',
+        category: 'Study',
+        createdAt: now,
+      ),
+      CareerTask(
+        id: '3',
+        title: 'Revise SQL',
+        category: 'Study',
+        createdAt: now,
+      ),
 
-  CareerTask(
-    id: 'study_3',
-    title: 'SQL',
-    category: 'Study',
-    createdAt: DateTime.now(),
-  ),
+      // Projects
+      CareerTask(
+        id: '4',
+        title: 'Build Shady OS',
+        category: 'Projects',
+        createdAt: now,
+      ),
+      CareerTask(
+        id: '5',
+        title: 'Automation Framework',
+        category: 'Projects',
+        createdAt: now,
+      ),
 
-  CareerTask(
-    id: 'study_4',
-    title: 'System Design',
-    category: 'Study',
-    createdAt: DateTime.now(),
-  ),
+      // Applications
+      CareerTask(
+        id: '6',
+        title: 'Apply to Google',
+        category: 'Applications',
+        createdAt: now,
+      ),
+      CareerTask(
+        id: '7',
+        title: 'Apply to Microsoft',
+        category: 'Applications',
+        createdAt: now,
+      ),
 
-  // PROJECTS
-  CareerTask(
-    id: 'project_1',
-    title: 'Shady OS',
-    category: 'Projects',
-    createdAt: DateTime.now(),
-  ),
-
-  CareerTask(
-    id: 'project_2',
-    title: 'Automation Framework',
-    category: 'Projects',
-    createdAt: DateTime.now(),
-  ),
-
-  // APPLICATIONS
-  CareerTask(
-    id: 'job_1',
-    title: 'Apply to 5 Companies',
-    category: 'Job Applications',
-    createdAt: DateTime.now(),
-  ),
-
-  CareerTask(
-    id: 'job_2',
-    title: 'Update Resume',
-    category: 'Job Applications',
-    createdAt: DateTime.now(),
-  ),
-
-  CareerTask(
-    id: 'job_3',
-    title: 'Update LinkedIn',
-    category: 'Job Applications',
-    createdAt: DateTime.now(),
-  ),
-
-  // INTERVIEW
-  CareerTask(
-    id: 'interview_1',
-    title: 'Python Questions',
-    category: 'Interview',
-    createdAt: DateTime.now(),
-  ),
-
-  CareerTask(
-    id: 'interview_2',
-    title: 'Playwright Questions',
-    category: 'Interview',
-    createdAt: DateTime.now(),
-  ),
-
-  CareerTask(
-    id: 'interview_3',
-    title: 'SQL Questions',
-    category: 'Interview',
-    createdAt: DateTime.now(),
-  ),
-];
+      // Interview
+      CareerTask(
+        id: '8',
+        title: 'HR Interview',
+        category: 'Interview',
+        createdAt: now,
+      ),
+      CareerTask(
+        id: '9',
+        title: 'Technical Revision',
+        category: 'Interview',
+        createdAt: now,
+      ),
+    ];
+  }
+}

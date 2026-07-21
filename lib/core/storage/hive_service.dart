@@ -18,6 +18,7 @@ class HiveService {
     }
     if (!Hive.isAdapterRegistered(2)) {
       Hive.registerAdapter(CareerTaskAdapter());
+      await Hive.openBox<CareerTask>(HiveBoxes.career);
     }
     await Hive.openBox<Mission>(HiveBoxes.missions);
     await Hive.openBox<DietItem>(HiveBoxes.diet);

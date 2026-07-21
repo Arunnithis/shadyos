@@ -63,30 +63,34 @@ class CareerScreen extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CareerSection(title: title),
+        CareerSection(
+          title: title,
+          child: Column(
+            children: tasks.map((task) {
+              final index = ref.read(careerNotifierProvider).indexOf(task);
 
-        ...tasks.map(
-          (task) => CareerTile(
-            task: task,
+              return CareerTile(
+                task: task,
+                onChanged: () {
+                  ref.read(careerNotifierProvider.notifier).toggleTask(index);
+                },
+                onEdit: () async {
+                  final edited = await showDialog<CareerTask>(
+                    context: context,
+                    builder: (_) => AddCareerDialog(task: task),
+                  );
 
-            onChanged: (_) {
-              ref.read(careerNotifierProvider.notifier).toggleTask(task.id);
-            },
-
-            onEdit: () async {
-              final CareerTask? edited = await showDialog<CareerTask>(
-                context: context,
-                builder: (_) => AddCareerDialog(task: task),
+                  if (edited != null) {
+                    ref
+                        .read(careerNotifierProvider.notifier)
+                        .updateTask(index, edited);
+                  }
+                },
+                onDelete: () {
+                  ref.read(careerNotifierProvider.notifier).deleteTask(index);
+                },
               );
-
-              if (edited != null) {
-                ref.read(careerNotifierProvider.notifier).updateTask(edited);
-              }
-            },
-
-            onDelete: () {
-              ref.read(careerNotifierProvider.notifier).deleteTask(task.id);
-            },
+            }).toList(),
           ),
         ),
       ],

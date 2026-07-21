@@ -5,5 +5,5 @@ class HiveBoxes {
   static const progress = 'progress';
   static const settings = 'settings';
 
-  static const career = 'career';
+  static const String career = 'career';
 }

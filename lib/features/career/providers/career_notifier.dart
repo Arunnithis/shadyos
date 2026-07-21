@@ -3,60 +3,51 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/career_repository.dart';
 import '../models/career_task.dart';
 
-final careerRepositoryProvider = Provider<CareerRepository>((ref) {
-  return CareerRepository();
-});
+final careerRepositoryProvider = Provider((ref) => CareerRepository());
 
 final careerNotifierProvider =
-    StateNotifierProvider<CareerNotifier, List<CareerTask>>((ref) {
-      return CareerNotifier(ref.read(careerRepositoryProvider));
-    });
+    StateNotifierProvider<CareerNotifier, List<CareerTask>>(
+      (ref) => CareerNotifier(ref.read(careerRepositoryProvider)),
+    );
 
 class CareerNotifier extends StateNotifier<List<CareerTask>> {
-  CareerNotifier(this._repository) : super([]) {
+  final CareerRepository repository;
+
+  CareerNotifier(this.repository) : super([]) {
     initialize();
   }
 
-  final CareerRepository _repository;
-
   Future<void> initialize() async {
-    await _repository.initialize();
+    await repository.initialize();
     loadTasks();
   }
 
   void loadTasks() {
-    state = _repository.loadTasks();
+    state = repository.loadTasks();
   }
 
   Future<void> addTask(CareerTask task) async {
-    await _repository.addTask(task);
+    await repository.addTask(task);
     loadTasks();
   }
 
-  Future<void> updateTask(CareerTask task) async {
-    await _repository.updateTask(task);
+  Future<void> updateTask(int index, CareerTask task) async {
+    await repository.updateTask(index, task);
     loadTasks();
   }
 
-  Future<void> deleteTask(String id) async {
-    await _repository.deleteTask(id);
+  Future<void> deleteTask(int index) async {
+    await repository.deleteTask(index);
     loadTasks();
   }
 
-  Future<void> toggleTask(String id) async {
-    final task = state.firstWhere((e) => e.id == id);
-
-    await _repository.updateTask(task.copyWith(completed: !task.completed));
-
+  Future<void> toggleTask(int index) async {
+    await repository.toggleTask(index);
     loadTasks();
   }
 
-  int get completedCount => state.where((e) => e.completed).length;
-
-  int get totalCount => state.length;
-
-  double get progress {
-    if (state.isEmpty) return 0;
-    return completedCount / totalCount;
+  Future<void> resetCareer() async {
+    await repository.resetCareer();
+    loadTasks();
   }
 }

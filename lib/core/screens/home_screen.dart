@@ -5,6 +5,7 @@ import 'package:shady_os/features/mission/screens/mission_screen.dart';
 import 'package:shady_os/features/diet/screens/diet_screen.dart';
 import 'package:shady_os/features/water/screens/water_screen.dart';
 import 'package:shady_os/features/progress/screens/progress_screen.dart';
+import 'package:shady_os/features/career/screens/career_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     MissionScreen(),
     DietScreen(),
     WaterScreen(),
+    CareerScreen(),
     ProgressScreen(),
   ];
 
@@ -31,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
+        type: BottomNavigationBarType.fixed,
 
         onTap: (index) {
           setState(() {
@@ -43,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Mission'),
           BottomNavigationBarItem(icon: Icon(Icons.restaurant), label: 'Diet'),
           BottomNavigationBarItem(icon: Icon(Icons.water_drop), label: 'Water'),
+          BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Career'),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Progress',
