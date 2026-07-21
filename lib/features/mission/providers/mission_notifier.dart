@@ -89,6 +89,18 @@ class MissionNotifier extends StateNotifier<List<Mission>> {
     state = state.where((m) => m.id != id).toList();
   }
 
+  Future<void> resetAll() async {
+    final updatedMissions = state.map((mission) {
+      return mission.completed ? mission.copyWith(completed: false) : mission;
+    }).toList();
+
+    for (final mission in updatedMissions) {
+      await _repository.updateMission(mission);
+    }
+
+    state = updatedMissions;
+  }
+
   int get completedCount => state.where((m) => m.completed).length;
 
   int get totalCount => state.length;

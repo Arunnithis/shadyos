@@ -50,4 +50,10 @@ class CareerNotifier extends StateNotifier<List<CareerTask>> {
     await repository.resetCareer();
     loadTasks();
   }
+
+  Future<void> resetAll() async {
+    await repository.resetCareer();
+
+    state = repository.loadTasks();
+  }
 }

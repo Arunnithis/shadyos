@@ -107,4 +107,23 @@ class DietNotifier extends StateNotifier<List<DietItem>> {
     if (state.isEmpty) return 0;
     return completedCount / totalCount;
   }
+
+  Future<void> resetAll() async {
+    final updatedMeals = <DietItem>[];
+
+    for (final meal in state) {
+      if (!meal.completed) {
+        updatedMeals.add(meal);
+        continue;
+      }
+
+      final updatedMeal = meal.copyWith(completed: false);
+
+      await _repository.updateItem(updatedMeal);
+
+      updatedMeals.add(updatedMeal);
+    }
+
+    state = updatedMeals;
+  }
 }
