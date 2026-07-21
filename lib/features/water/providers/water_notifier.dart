@@ -25,7 +25,7 @@ class WaterNotifier extends StateNotifier<Water> {
   }
 
   Future<void> addGlass() async {
-    if (state.glasses >= 6) return;
+    if (state.glasses >= state.goal) return;
 
     state = state.copyWith(glasses: state.glasses + 1);
 

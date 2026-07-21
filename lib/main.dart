@@ -3,6 +3,7 @@ import 'package:shady_os/core/screens/home_screen.dart';
 import 'package:shady_os/core/theme/app_theme.dart';
 import 'package:shady_os/core/storage/hive_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'features/settings/models/user_settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

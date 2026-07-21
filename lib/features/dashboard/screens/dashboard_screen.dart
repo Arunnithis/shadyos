@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/app_colors.dart';
+import '../../career/providers/career_notifier.dart';
 import '../../diet/providers/diet_notifier.dart';
 import '../../mission/providers/mission_notifier.dart';
 import '../../water/providers/water_notifier.dart';
+import '../../gamification/providers/gamification_notifier.dart';
 
-import '../widgets/dashboard_header.dart';
+import '../utils/dashboard_utils.dart';
 import '../widgets/discipline_score_card.dart';
-import '../widgets/module_status_card.dart';
+import '../widgets/greeting_card.dart';
+import '../widgets/today_progress_card.dart';
+import '../widgets/stats_card.dart';
+import '../widgets/quick_actions_card.dart';
+import '../widgets/quote_card.dart';
+import '../../gamification/utils/level_utils.dart';
+
+import '../../mission/screens/mission_screen.dart';
+import '../../career/screens/career_screen.dart';
+import '../../water/screens/water_screen.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -16,85 +26,95 @@ class DashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final missions = ref.watch(missionNotifierProvider);
-    final meals = ref.watch(dietNotifierProvider);
+    final career = ref.watch(careerNotifierProvider);
+    final diet = ref.watch(dietNotifierProvider);
     final water = ref.watch(waterNotifierProvider);
+    final stats = ref.watch(gamificationProvider);
+
+    final greeting = DashboardUtils.greeting();
+    final quote = DashboardUtils.randomQuote();
 
     final missionCompleted = missions.where((e) => e.completed).length;
-    final missionTotal = missions.length;
-
-    final dietCompleted = meals.where((e) => e.completed).length;
-    final dietTotal = meals.length;
-
+    final careerCompleted = career.where((e) => e.completed).length;
+    final dietCompleted = diet.where((e) => e.completed).length;
     final waterCompleted = water.glasses;
-    const waterGoal = 6;
 
-    final missionProgress = missionTotal == 0
-        ? 0
-        : missionCompleted / missionTotal;
+    double percent(int completed, int total) {
+      if (total == 0) return 0;
+      return (completed / total) * 100;
+    }
 
-    final dietProgress = dietTotal == 0 ? 0 : dietCompleted / dietTotal;
-
-    final waterProgress = waterCompleted / waterGoal;
-
-    final score = (missionProgress + dietProgress + waterProgress) / 3;
+    final score = DashboardUtils.calculateDisciplineScore(
+      mission: percent(missionCompleted, missions.length),
+      career: percent(careerCompleted, career.length),
+      diet: percent(dietCompleted, diet.length),
+      water: percent(waterCompleted, water.goal),
+    );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      appBar: AppBar(title: const Text("Shady OS"), centerTitle: true),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          GreetingCard(greeting: greeting, username: "Arun"),
 
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            const DashboardHeader(),
+          const SizedBox(height: 18),
 
-            const SizedBox(height: 24),
+          DisciplineScoreCard(
+            score: score,
+            label: DashboardUtils.scoreLabel(score),
+          ),
 
-            DisciplineScoreCard(score: score),
+          const SizedBox(height: 18),
 
-            const SizedBox(height: 24),
+          TodayProgressCard(
+            missionCompleted: missionCompleted,
+            missionTotal: missions.length,
+            careerCompleted: careerCompleted,
+            careerTotal: career.length,
+            dietCompleted: dietCompleted,
+            dietTotal: diet.length,
+            waterCompleted: waterCompleted,
+            waterTotal: water.goal,
+          ),
 
-            ModuleStatusCard(
-              title: "Mission",
-              subtitle: "$missionCompleted / $missionTotal Completed",
-              icon: Icons.flag,
-              color: AppColors.primary,
-              onTap: () {},
-            ),
+          const SizedBox(height: 18),
+          StatsCard(
+            streak: stats.streak,
+            level: stats.level,
+            xp: LevelUtils.currentLevelXp(stats.xp),
+            nextLevelXp: LevelUtils.nextLevelXp(stats.xp),
+          ),
 
-            ModuleStatusCard(
-              title: "Diet",
-              subtitle: "$dietCompleted / $dietTotal Completed",
-              icon: Icons.restaurant,
-              color: AppColors.green,
-              onTap: () {},
-            ),
+          const SizedBox(height: 18),
 
-            ModuleStatusCard(
-              title: "Water",
-              subtitle: "$waterCompleted / $waterGoal Glasses",
-              icon: Icons.water_drop,
-              color: AppColors.blue,
-              onTap: () {},
-            ),
+          QuoteCard(quote: quote.text, author: quote.author),
 
-            const SizedBox(height: 24),
+          const SizedBox(height: 18),
 
-            Card(
-              color: AppColors.card,
-              child: const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  '"Discipline is choosing what you want most over what you want now."',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    color: Colors.white70,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          QuickActionsCard(
+            onMission: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const MissionScreen()),
+              );
+            },
+            onCareer: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CareerScreen()),
+              );
+            },
+            onWater: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const WaterScreen()),
+              );
+            },
+          ),
+
+          const SizedBox(height: 30),
+        ],
       ),
     );
   }
